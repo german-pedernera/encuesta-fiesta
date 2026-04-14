@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta GNA - Evento 28 de Julio</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        :root { --primary-color: #2d5a27; --hover-color: #1e3d1a; --secondary-color: #6c757d; }
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .container { max-width: 600px; }
+        .card { border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.4s ease-out; }
+        
+        /* Estilo unificado de botones */
+        .btn-gna { 
+            background-color: var(--primary-color); 
+            color: white; 
+            border-radius: 50px; 
+            padding: 12px 24px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+        .btn-gna:hover { background-color: var(--hover-color); color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(45,90,39,0.3); }
+        
+        .btn-back { background-color: var(--secondary-color); width: auto; min-width: 120px; }
+        .btn-next { width: auto; min-width: 120px; }
+
+        .chart-container { position: relative; height: 280px; margin-bottom: 2.5rem; }
+        .counter-badge { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-close-white { filter: brightness(0) invert(1); }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="card p-4 bg-white">
+        <form id="surveyForm">
+            
+            <div class="step active" id="step1">
+                <h3 class="text-center mb-4 text-success">Datos del Personal</h3>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Jerarquía</label>
+                    <select id="jerarquia" class="form-select" required>
+                        <option value="">Seleccione su jerarquía...</option>
+                        <optgroup label="Oficiales">
+                            <option>Comandante General</option><option>Comandante Mayor</option>
+                            <option>Comandante Principal</option><option>Comandante</option>
+                            <option>Segundo Comandante</option><option>Primer Alférez</option>
+                            <option>Alférez</option><option>Subalférez</option>
+                        </optgroup>
+                        <optgroup label="Suboficiales">
+                            <option>Suboficial Mayor</option><option>Suboficial Principal</option>
+                            <option>Sargento Ayudante</option><option>Sargento Primero</option>
+                            <option>Sargento</option><option>Cabo Primero</option>
+                            <option>Cabo</option><option>Gendarme</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nombres y Apellidos</label>
+                    <input type="text" id="nombreCompleto" class="form-control" placeholder="Ej: Juan Ramón Pérez" required>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-4">
+                        <label class="form-label fw-bold">CE</label>
+                        <input type="number" id="ce" class="form-control" placeholder="Clave" required>
+                    </div>
+                    <div class="col-6 mb-4">
+                        <label class="form-label fw-bold">MI</label>
+                        <input type="number" id="mi" class="form-control" placeholder="Matrícula" required>
+                    </div>
+                </div>
+                <button type="button" class="btn-gna" onclick="validateAndNext(1, 2)">Siguiente</button>
+            </div>
+
+            <div class="step" id="step2">
+                <h4 class="mb-3 text-success">Preferencia de Evento</h4>
+                <p class="text-muted small">Seleccione una sola opción:</p>
+                <div class="list-group mb-4">
+                    <label class="list-group-item p-3">
+                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Fiesta 28 Julio" required> 
+                        Quiero que se realice fiesta del 28 de julio
+                    </label>
+                    <label class="list-group-item p-3">
+                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Cena"> 
+                        Solo Cena
+                    </label>
+                    <label class="list-group-item p-3">
+                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Almuerzo"> 
+                        Solo Almuerzo
+                    </label>
+                    <label class="list-group-item p-3 bg-light text-danger border-danger">
+                        <input class="form-check-input me-2" type="radio" name="opEvento" value="No quiero nada"> 
+                        <strong>No quiero nada</strong>
+                    </label>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn-gna btn-back" onclick="prevStep(1)">Atrás</button>
+                    <button type="button" class="btn-gna btn-next" onclick="validateAndNext(2, 3)">Siguiente</button>
+                </div>
+            </div>
+
+            <div class="step" id="step3">
+                <h4 class="mb-3 text-success">Postulación a Comisión</h4>
+                <div class="list-group mb-4">
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Fiesta" required> Comisión Fiesta</label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Cena"> Comisión Cena</label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Almuerzo"> Comisión Almuerzo</label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="No deseo postularme"> No deseo postularme</label>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn-gna btn-back" onclick="prevStep(2)">Atrás</button>
+                    <button type="button" class="btn-gna btn-next" onclick="processVoluntary()">Enviar</button>
+                </div>
+            </div>
+
+            <div class="step" id="step4">
+                <div class="text-center mb-4">
+                    <h3 class="text-success mb-1">Estadísticas</h3>
+                    <div class="counter-badge" id="totalVotos">0</div>
+                    <small class="text-muted">Participantes registrados</small>
+                </div>
+                <div class="chart-container"><canvas id="chartEventos"></canvas></div>
+                <div class="chart-container"><canvas id="chartVoluntarios"></canvas></div>
+                
+                <div class="d-grid gap-3 mt-4">
+                    <button type="button" class="btn-gna" onclick="adminViewVolunteers()">Ver Voluntarios (Admin)</button>
+                    <button type="button" class="btn-gna btn-back w-100" onclick="nextStep(5)">Finalizar</button>
+                    <button type="button" class="btn btn-link text-danger btn-sm" onclick="adminReset()">Reiniciar Sistema</button>
+                </div>
+            </div>
+
+            <div class="step text-center py-4" id="step5">
+                <h1 class="display-1 text-success mb-3">✓</h1>
+                <h3>¡Muchas gracias!</h3>
+                <p class="text-muted">Su participación ha sido guardada. Solo se permite un envío por dispositivo.</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPostulacion" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title">Confirmar Voluntariado</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <p class="fw-bold fs-5 text-primary mb-0">"Me postulo voluntariamente a participar de la comisión"</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn-gna" onclick="submitFinal()">Confirmar y Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAdminVoluntarios" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white border-0">
+                <h5 class="modal-title">Listado de Voluntarios</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-success btn-sm rounded-pill px-3" onclick="downloadPDF()">Descargar PDF</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm small" id="tablaVoluntarios">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Jerarquía</th><th>Nombre</th><th>CE</th><th>MI</th><th>Comisión</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaVoluntariosBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDcCK0-AfxcszXj4RR6RYbKNiVYaOseLW4",
+        authDomain: "fiesta-encuesta.firebaseapp.com",
+        projectId: "fiesta-encuesta",
+        storageBucket: "fiesta-encuesta.firebasestorage.app",
+        messagingSenderId: "18000932530",
+        appId: "1:18000932530:web:09a949b2a9cf9c81ad23ab"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const encuestasRef = collection(db, "encuestas_gna");
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('voto_enviado_gna') === 'true') nextStep(5);
+    });
+
+    window.nextStep = (n) => {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step'+n).classList.add('active');
+        if(n === 4) initCharts();
+    };
+
+    window.prevStep = (n) => nextStep(n);
+
+    window.validateAndNext = (curr, nxt) => {
+        const stepDiv = document.getElementById('step'+curr);
+        const inputs = stepDiv.querySelectorAll('input, select');
+        let v = true; inputs.forEach(i => { if(!i.checkValidity()){i.reportValidity(); v=false;} });
+        if(v) nextStep(nxt);
+    };
+
+    const modPost = new bootstrap.Modal(document.getElementById('modalPostulacion'));
+    const modAdmin = new bootstrap.Modal(document.getElementById('modalAdminVoluntarios'));
+
+    window.processVoluntary = () => {
+        const val = document.querySelector('input[name="opVol"]:checked');
+        if(!val) return alert("Seleccione una opción");
+        if(val.value === "No deseo postularme") submitFinal();
+        else modPost.show();
+    };
+
+    window.submitFinal = async () => {
+        const data = {
+            jer: document.getElementById('jerarquia').value,
+            nom: document.getElementById('nombreCompleto').value,
+            ce: document.getElementById('ce').value,
+            mi: document.getElementById('mi').value,
+            ev: document.querySelector('input[name="opEvento"]:checked').value,
+            vol: document.querySelector('input[name="opVol"]:checked').value,
+            ts: new Date().toLocaleString()
+        };
+        try {
+            await addDoc(encuestasRef, data);
+            localStorage.setItem('voto_enviado_gna', 'true');
+            modPost.hide();
+            nextStep(4);
+        } catch(e) { alert("Error al enviar. Verifique su conexión."); }
+    };
+
+    window.adminViewVolunteers = async () => {
+        if(prompt("Clave de Administrador:") === "Emi25") {
+            const snap = await getDocs(encuestasRef);
+            const tbody = document.getElementById('listaVoluntariosBody');
+            tbody.innerHTML = "";
+            snap.forEach(d => {
+                const i = d.data();
+                if(i.vol !== "No deseo postularme") {
+                    tbody.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.ce}</td><td>${i.mi}</td><td>${i.vol}</td></tr>`;
+                }
+            });
+            modAdmin.show();
+        } else alert("Clave incorrecta");
+    };
+
+    window.downloadPDF = () => {
+        const { jsPDF } = window.jspdf;
+        const docPDF = new jsPDF();
+        docPDF.setFontSize(16);
+        docPDF.text("LISTADO DE VOLUNTARIOS - EVENTO GNA", 14, 15);
+        docPDF.autoTable({
+            html: '#tablaVoluntarios',
+            startY: 20,
+            theme: 'striped',
+            headStyles: { fillStyle: [45, 90, 39] }
+        });
+        docPDF.save("voluntarios_gna_2026.pdf");
+    };
+
+    window.adminReset = async () => {
+        if(prompt("Clave para BORRAR TODO:") === "Emi25") {
+            const snap = await getDocs(encuestasRef);
+            await Promise.all(snap.docs.map(d => deleteDoc(doc(db, "encuestas_gna", d.id))));
+            localStorage.removeItem('voto_enviado_gna');
+            location.reload();
+        }
+    };
+
+    let c1, c2;
+    function initCharts() {
+        onSnapshot(encuestasRef, (snap) => {
+            document.getElementById('totalVotos').innerText = snap.size;
+            const ev = { "Fiesta 28 Julio":0, "Solo Cena":0, "Solo Almuerzo":0, "No quiero nada":0 };
+            const vl = { "Voluntario Fiesta":0, "Voluntario Cena":0, "Voluntario Almuerzo":0, "No deseo postularme":0 };
+            snap.forEach(d => {
+                const x = d.data();
+                if(ev[x.ev] !== undefined) ev[x.ev]++;
+                if(vl[x.vol] !== undefined) vl[x.vol]++;
+            });
+            renderPie('chartEventos', "Preferencia de Evento", ev, c1, (c) => c1=c);
+            renderPie('chartVoluntarios', "Postulaciones", vl, c2, (c) => c2=c);
+        });
+    }
+
+    function renderPie(id, t, d, inst, set) {
+        const ctx = document.getElementById(id).getContext('2d');
+        if(inst) inst.destroy();
+        set(new Chart(ctx, {
+            type: 'pie',
+            data: { labels: Object.keys(d), datasets:[{ data: Object.values(d), backgroundColor: ['#2d5a27','#4ca64c','#85c185','#adb5bd'] }]},
+            options: { responsive:true, maintainAspectRatio:false, plugins: { title: { display:true, text:t } } }
+        }));
+    }
+</script>
+</body>
+</html>
