@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuesta GNA - Evento 28 de Julio</title>
+    <title>Sistema Educación Física GNA</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,160 +11,160 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        :root { --primary-color: #2d5a27; --hover-color: #1e3d1a; --secondary-color: #6c757d; }
+        :root { --primary-color: #2d5a27; --hover-color: #1e3d1a; }
         body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
         .container { max-width: 600px; }
         .card { border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .step { display: none; }
         .step.active { display: block; animation: fadeIn 0.4s ease-out; }
-        
-        .btn-gna { 
-            background-color: var(--primary-color); 
-            color: white; border-radius: 50px; padding: 12px 24px;
-            border: none; font-weight: 600; transition: all 0.3s;
-            width: 100%; text-align: center;
-        }
+        .btn-gna { background-color: var(--primary-color); color: white; border-radius: 50px; padding: 12px 24px; border: none; font-weight: 600; width: 100%; transition: 0.3s; }
         .btn-gna:hover { background-color: var(--hover-color); color: white; transform: translateY(-2px); }
-        .btn-back { background-color: var(--secondary-color); width: auto; min-width: 120px; }
-        .btn-next { width: auto; min-width: 120px; }
-        .chart-container { position: relative; height: 260px; margin-bottom: 2rem; }
-        .counter-badge { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        
+        input[type="text"], select { text-transform: uppercase; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .btn-close-white { filter: brightness(0) invert(1); }
-        .admin-link { color: #aaa; text-decoration: none; font-size: 0.8rem; margin-top: 20px; display: block; text-align: center; }
-        .admin-link:hover { color: var(--primary-color); }
+        .admin-link { color: #bbb; text-decoration: none; font-size: 0.8rem; display: block; text-align: center; margin-top: 20px; cursor: pointer; }
+        .vote-counter { background: var(--primary-color); color: white; padding: 5px 15px; border-radius: 10px; font-weight: bold; }
+        .table-admin input, .table-admin select { font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <div class="container py-5">
-    <div class="card p-4 bg-white">
+    <div class="card p-4 bg-white shadow-lg">
         <form id="surveyForm">
-            
             <div class="step active" id="step1">
-                <h3 class="text-center mb-4 text-success">Datos del Personal</h3>
+                <h3 class="text-center mb-4 text-success">IDENTIFICACIÓN PERSONAL</h3>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Jerarquía</label>
+                    <label class="form-label fw-bold">JERARQUÍA</label>
                     <select id="jerarquia" class="form-select" required>
-                        <option value="">Seleccione...</option>
-                        <optgroup label="Oficiales"><option>Comandante General</option><option>Comandante Mayor</option><option>Comandante Principal</option><option>Comandante</option><option>Segundo Comandante</option><option>Primer Alférez</option><option>Alférez</option><option>Subalférez</option></optgroup>
-                        <optgroup label="Suboficiales"><option>Suboficial Mayor</option><option>Suboficial Principal</option><option>Sargento Ayudante</option><option>Sargento Primero</option><option>Sargento</option><option>Cabo Primero</option><option>Cabo</option><option>Gendarme</option></optgroup>
+                        <option value="">SELECCIONE...</option>
+                        <optgroup label="─── OFICIALES ───">
+                            <option>COMANDANTE GENERAL</option>
+                            <option>COMANDANTE MAYOR</option>
+                            <option>COMANDANTE PRINCIPAL</option>
+                            <option>COMANDANTE</option>
+                            <option>SEGUNDO COMANDANTE</option>
+                            <option>PRIMER ALFÉREZ</option>
+                            <option>ALFÉREZ</option>
+                            <option>SUBALFÉREZ</option>
+                        </optgroup>
+                        <optgroup label="─── SUBOFICIALES ───">
+                            <option>SUBOFICIAL MAYOR</option>
+                            <option>SUBOFICIAL PRINCIPAL</option>
+                            <option>SARGENTO AYUDANTE</option>
+                            <option>SARGENTO PRIMERO</option>
+                            <option>SARGENTO</option>
+                            <option>CABO PRIMERO</option>
+                            <option>CABO</option>
+                            <option>GENDARME</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Nombres y Apellidos</label>
-                    <input type="text" id="nombreCompleto" class="form-control" required>
+                    <label class="form-label fw-bold">NOMBRES Y APELLIDOS</label>
+                    <input type="text" id="nombreCompleto" class="form-control" placeholder="NOMBRE COMPLETO" required>
                 </div>
                 <div class="row mb-4">
                     <div class="col-6"><label class="form-label fw-bold">CE</label><input type="number" id="ce" class="form-control" required></div>
                     <div class="col-6"><label class="form-label fw-bold">MI</label><input type="number" id="mi" class="form-control" required></div>
                 </div>
-                <button type="button" class="btn-gna" onclick="validateAndNext(1, 2)">Siguiente</button>
+                <button type="button" class="btn-gna" onclick="validateStep(1, 2)">SIGUIENTE</button>
             </div>
 
             <div class="step" id="step2">
-                <h4 class="mb-3 text-success">Preferencia de Evento</h4>
+                <h4 class="mb-3 text-success text-center">PREFERENCIA DE EVENTO</h4>
                 <div class="list-group mb-4">
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Fiesta 28 Julio" required> Fiesta 28 de Julio</label>
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Cena"> Solo Cena</label>
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Almuerzo"> Solo Almuerzo</label>
-                    <label class="list-group-item p-3 bg-light text-danger"><input class="form-check-input me-2" type="radio" name="opEvento" value="No quiero nada"> <strong>No quiero nada</strong></label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opEvento" value="FIESTA 28 JULIO" required> FIESTA 28 JULIO</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opEvento" value="SOLO CENA"> SOLO CENA</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opEvento" value="SOLO ALMUERZO"> SOLO ALMUERZO</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opEvento" value="NO DESEA NADA"> NO DESEA NADA</label>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn-gna btn-back" onclick="prevStep(1)">Atrás</button>
-                    <button type="button" class="btn-gna btn-next" onclick="validateAndNext(2, 3)">Siguiente</button>
-                </div>
+                <button type="button" class="btn-gna" onclick="validateStep(2, 3)">SIGUIENTE</button>
             </div>
 
             <div class="step" id="step3">
-                <h4 class="mb-3 text-success">Postulación a Comisión</h4>
+                <h4 class="mb-3 text-success text-center">QUIERO PARTICIPAR EN LA COMISIÓN:</h4>
                 <div class="list-group mb-4">
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Fiesta" required> Comisión Fiesta</label>
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Cena"> Comisión Cena</label>
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="Voluntario Almuerzo"> Comisión Almuerzo</label>
-                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opVol" value="No deseo postularme"> No deseo postularme</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="VOLUNTARIO FIESTA" required> VOLUNTARIO FIESTA</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="VOLUNTARIO CENA"> VOLUNTARIO CENA</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="VOLUNTARIO ALMUERZO"> VOLUNTARIO ALMUERZO</label>
+                    <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="NO DESEA POSTULARSE"> NO DESEA POSTULARSE</label>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn-gna btn-back" onclick="prevStep(2)">Atrás</button>
-                    <button type="button" class="btn-gna btn-next" onclick="processVoluntary()">Enviar</button>
-                </div>
-            </div>
-
-            <div class="step" id="step4">
-                <div class="text-center mb-3">
-                    <h4 class="text-success mb-0">Estadísticas en Vivo</h4>
-                    <div class="counter-badge" id="totalVotos">0</div>
-                    <small class="text-muted">Participantes</small>
-                </div>
-                <div class="chart-container"><canvas id="chartEventos"></canvas></div>
-                <div class="chart-container"><canvas id="chartVoluntarios"></canvas></div>
-                <button type="button" class="btn-gna" onclick="nextStep(5)">Finalizar</button>
-            </div>
-
-            <div class="step text-center py-4" id="step5">
-                <h1 class="display-1 text-success mb-3">✓</h1>
-                <h3>¡Muchas gracias!</h3>
-                <p class="text-muted">Tu respuesta ha sido procesada.</p>
+                <button type="button" class="btn-gna" onclick="submitFinal()">ENVIAR</button>
             </div>
         </form>
-        
-        <a href="#" class="admin-link" onclick="openAdminPanel()">🔓 Panel Administrador</a>
+        <span class="admin-link" onclick="openAdmin()">⚙️ ACCESO ADMINISTRADOR</span>
     </div>
 </div>
 
-<div class="modal fade" id="modalPostulacion" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Confirmar Voluntariado</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+<div class="modal fade" id="modalAlert" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content text-center shadow border-0">
+            <div id="alertHeader" class="modal-header justify-content-center text-white border-0">
+                <h6 class="modal-title" id="alertTitle">AVISO</h6>
             </div>
-            <div class="modal-body text-center p-4">
-                <p class="fw-bold fs-5 text-primary">"Me postulo voluntariamente a participar de la comisión"</p>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn-gna" onclick="submitFinal()">Confirmar y Enviar</button>
+            <div class="modal-body fw-bold" id="alertBody"></div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-dark btn-sm px-4 rounded-pill" data-bs-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="modalAdminPanel" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="modalAdmin" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Gestión de Encuesta (Admin)</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">GESTIÓN DE DATOS | <span class="vote-counter">TOTAL VOTOS: <span id="vCount">0</span></span></h5>
+                <div class="ms-auto d-flex gap-2">
+                    <button class="btn btn-info btn-sm fw-bold" onclick="showCharts()">📊 GRÁFICOS</button>
+                    <button class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">CERRAR</button>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
-                    <button class="btn btn-outline-success" onclick="renderTable('voluntarios')">Lista Voluntarios</button>
-                    <button class="btn btn-outline-primary" onclick="renderTable('total')">Lista Total Votantes</button>
-                    <button class="btn btn-danger" onclick="adminReset()">Eliminar Base de Datos</button>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <input type="text" id="adminSearch" class="form-control" placeholder="🔍 BUSCAR POR NOMBRE, CE, JERARQUÍA, EVENTO O COMISIÓN..." onkeyup="filterAdmin()">
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-success w-100" onclick="downloadPDF()">GENERAR PDF</button>
+                    </div>
                 </div>
-                
-                <div id="adminTableContent" style="display:none;">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 id="tableTitle">Listado</h6>
-                        <button class="btn btn-sm btn-success" onclick="downloadPDF()">Descargar PDF</button>
-                    </div>
-                    <div class="table-responsive" style="max-height: 350px;">
-                        <table class="table table-hover table-sm small" id="tablaAdmin">
-                            <thead class="table-dark" id="tablaHead"></thead>
-                            <tbody id="tablaBody"></tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm align-middle table-admin">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th>JERARQUÍA</th><th>NOMBRE</th><th>CE</th><th>MI</th><th>EVENTO</th><th>COMISIÓN</th><th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="modal fade" id="modalCharts" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ESTADÍSTICAS GENERALES</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6"><canvas id="cEv"></canvas></div>
+                    <div class="col-md-6"><canvas id="cVol"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDcCK0-AfxcszXj4RR6RYbKNiVYaOseLW4",
@@ -177,127 +177,198 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const encuestasRef = collection(db, "encuestas_gna");
+    const ref = collection(db, "encuestas_gna");
 
-    // Bloqueo por dispositivo
-    window.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem('voto_gna_realizado') === 'true') nextStep(5);
-    });
+    let allDocs = [];
+    const modAlert = new bootstrap.Modal(document.getElementById('modalAlert'));
+    const modAdmin = new bootstrap.Modal(document.getElementById('modalAdmin'));
+    const modCharts = new bootstrap.Modal(document.getElementById('modalCharts'));
 
-    window.nextStep = (n) => {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        document.getElementById('step'+n).classList.add('active');
-        if(n === 4) initCharts();
-    };
-    window.prevStep = (n) => nextStep(n);
-
-    window.validateAndNext = (curr, nxt) => {
-        const step = document.getElementById('step'+curr);
-        const inputs = step.querySelectorAll('input, select');
-        let v = true; inputs.forEach(i => { if(!i.checkValidity()){i.reportValidity(); v=false;} });
-        if(v) nextStep(nxt);
+    window.showAlert = (m, type='success') => {
+        document.getElementById('alertHeader').className = `modal-header justify-content-center text-white border-0 ${type === 'success' ? 'bg-success' : 'bg-danger'}`;
+        document.getElementById('alertTitle').innerText = type === 'success' ? 'ÉXITO' : 'ERROR';
+        document.getElementById('alertBody').innerText = m;
+        modAlert.show();
     };
 
-    const modPost = new bootstrap.Modal(document.getElementById('modalPostulacion'));
-    const modAdmin = new bootstrap.Modal(document.getElementById('modalAdminPanel'));
-
-    window.processVoluntary = () => {
-        const val = document.querySelector('input[name="opVol"]:checked').value;
-        if(val === "No deseo postularme") submitFinal();
-        else modPost.show();
+    window.validateStep = (c, n) => {
+        const step = document.getElementById('step'+c);
+        let ok = true;
+        step.querySelectorAll('[required]').forEach(i => { if(!i.checkValidity()){i.reportValidity(); ok=false;} });
+        if(ok) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step'+n).classList.add('active');
+        }
     };
 
     window.submitFinal = async () => {
-        const data = {
-            jer: document.getElementById('jerarquia').value,
-            nom: document.getElementById('nombreCompleto').value,
-            ce: document.getElementById('ce').value,
-            mi: document.getElementById('mi').value,
-            ev: document.querySelector('input[name="opEvento"]:checked').value,
-            vol: document.querySelector('input[name="opVol"]:checked').value,
-            ts: new Date().toLocaleString()
-        };
-        await addDoc(encuestasRef, data);
-        localStorage.setItem('voto_gna_realizado', 'true');
-        modPost.hide();
-        nextStep(4);
-    };
+        const ceVal = document.getElementById('ce').value;
+        const miVal = document.getElementById('mi').value;
+        const nomVal = document.getElementById('nombreCompleto').value.toUpperCase().trim();
 
-    // --- FUNCIONES ADMIN ---
-    window.openAdminPanel = () => {
-        if(prompt("Clave de Acceso:") === "Emi25") modAdmin.show();
-        else alert("Acceso denegado");
-    };
+        try {
+            const snap = await getDocs(ref);
+            let duplicado = false;
+            let campoDuplicado = "";
 
-    window.renderTable = async (type) => {
-        const snap = await getDocs(encuestasRef);
-        const head = document.getElementById('tablaHead');
-        const body = document.getElementById('tablaBody');
-        const title = document.getElementById('tableTitle');
-        document.getElementById('adminTableContent').style.display = 'block';
-        
-        body.innerHTML = "";
-        if(type === 'voluntarios') {
-            title.innerText = "Lista de Voluntarios Postulados";
-            head.innerHTML = "<tr><th>Jerarquía</th><th>Nombre</th><th>Comisión</th><th>MI</th></tr>";
-            snap.forEach(d => {
-                const i = d.data();
-                if(i.vol !== "No deseo postularme") body.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.vol}</td><td>${i.mi}</td></tr>`;
+            snap.forEach(doc => {
+                const data = doc.data();
+                if (data.ce == ceVal) { duplicado = true; campoDuplicado = "CE"; }
+                if (data.mi == miVal) { duplicado = true; campoDuplicado = "MI"; }
+                if (data.nom == nomVal) { duplicado = true; campoDuplicado = "NOMBRE Y APELLIDO"; }
             });
-        } else {
-            title.innerText = "Lista Total de Votantes";
-            head.innerHTML = "<tr><th>Jerarquía</th><th>Nombre</th><th>Votó Por</th><th>CE</th></tr>";
-            snap.forEach(d => {
-                const i = d.data();
-                body.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.ev}</td><td>${i.ce}</td></tr>`;
-            });
+
+            if (duplicado) {
+                showAlert(`YA EXISTE UN REGISTRO CON ESTE ${campoDuplicado}`, "danger");
+                return;
+            }
+
+            const dataToSave = {
+                jer: document.getElementById('jerarquia').value,
+                nom: nomVal,
+                ce: ceVal,
+                mi: miVal,
+                ev: document.querySelector('input[name="opEvento"]:checked').value,
+                vol: document.querySelector('input[name="opVol"]:checked').value
+            };
+
+            await addDoc(ref, dataToSave);
+            showAlert("¡REGISTRO COMPLETADO EXITOSAMENTE!");
+            setTimeout(() => location.reload(), 2000);
+
+        } catch(e) { 
+            showAlert("ERROR AL PROCESAR EL REGISTRO", "danger"); 
         }
+    };
+
+    window.openAdmin = () => {
+        if(prompt("CLAVE DE ACCESO:") === "Emi25") {
+            onSnapshot(ref, (snap) => {
+                allDocs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                document.getElementById('vCount').innerText = allDocs.length;
+                filterAdmin();
+            });
+            modAdmin.show();
+        } else { alert("CLAVE INCORRECTA"); }
+    };
+
+    // BUSCADOR CORREGIDO: Filtrado fluido por todos los campos
+    window.filterAdmin = () => {
+        const queryText = document.getElementById('adminSearch').value.toLowerCase();
+        const filtered = allDocs.filter(d => 
+            (d.nom && d.nom.toLowerCase().includes(queryText)) || 
+            (d.ce && d.ce.toString().includes(queryText)) || 
+            (d.jer && d.jer.toLowerCase().includes(queryText)) ||
+            (d.ev && d.ev.toLowerCase().includes(queryText)) ||
+            (d.vol && d.vol.toLowerCase().includes(queryText))
+        );
+        
+        const body = document.getElementById('adminTableBody');
+        body.innerHTML = '';
+        filtered.forEach(d => {
+            body.innerHTML += `
+                <tr>
+                    <td>
+                        <select id="j-${d.id}" class="form-select form-select-sm">
+                            <option ${d.jer==='COMANDANTE GENERAL'?'selected':''}>COMANDANTE GENERAL</option>
+                            <option ${d.jer==='COMANDANTE MAYOR'?'selected':''}>COMANDANTE MAYOR</option>
+                            <option ${d.jer==='COMANDANTE PRINCIPAL'?'selected':''}>COMANDANTE PRINCIPAL</option>
+                            <option ${d.jer==='COMANDANTE'?'selected':''}>COMANDANTE</option>
+                            <option ${d.jer==='SEGUNDO COMANDANTE'?'selected':''}>SEGUNDO COMANDANTE</option>
+                            <option ${d.jer==='PRIMER ALFÉREZ'?'selected':''}>PRIMER ALFÉREZ</option>
+                            <option ${d.jer==='ALFÉREZ'?'selected':''}>ALFÉREZ</option>
+                            <option ${d.jer==='SUBALFÉREZ'?'selected':''}>SUBALFÉREZ</option>
+                            <option ${d.jer==='SUBOFICIAL MAYOR'?'selected':''}>SUBOFICIAL MAYOR</option>
+                            <option ${d.jer==='SUBOFICIAL PRINCIPAL'?'selected':''}>SUBOFICIAL PRINCIPAL</option>
+                            <option ${d.jer==='SARGENTO AYUDANTE'?'selected':''}>SARGENTO AYUDANTE</option>
+                            <option ${d.jer==='SARGENTO PRIMERO'?'selected':''}>SARGENTO PRIMERO</option>
+                            <option ${d.jer==='SARGENTO'?'selected':''}>SARGENTO</option>
+                            <option ${d.jer==='CABO PRIMERO'?'selected':''}>CABO PRIMERO</option>
+                            <option ${d.jer==='CABO'?'selected':''}>CABO</option>
+                            <option ${d.jer==='GENDARME'?'selected':''}>GENDARME</option>
+                        </select>
+                    </td>
+                    <td><input id="n-${d.id}" class="form-control form-control-sm" value="${d.nom}"></td>
+                    <td><input id="c-${d.id}" class="form-control form-control-sm text-center" value="${d.ce}" type="number"></td>
+                    <td><input id="m-${d.id}" class="form-control form-control-sm text-center" value="${d.mi}" type="number"></td>
+                    <td>
+                        <select id="e-${d.id}" class="form-select form-select-sm">
+                            <option ${d.ev === 'FIESTA 28 JULIO' ? 'selected':''}>FIESTA 28 JULIO</option>
+                            <option ${d.ev === 'SOLO CENA' ? 'selected':''}>SOLO CENA</option>
+                            <option ${d.ev === 'SOLO ALMUERZO' ? 'selected':''}>SOLO ALMUERZO</option>
+                            <option ${d.ev === 'NO DESEA NADA' ? 'selected':''}>NO DESEA NADA</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="v-${d.id}" class="form-select form-select-sm">
+                            <option ${d.vol === 'VOLUNTARIO FIESTA' ? 'selected':''}>VOLUNTARIO FIESTA</option>
+                            <option ${d.vol === 'VOLUNTARIO CENA' ? 'selected':''}>VOLUNTARIO CENA</option>
+                            <option ${d.vol === 'VOLUNTARIO ALMUERZO' ? 'selected':''}>VOLUNTARIO ALMUERZO</option>
+                            <option ${d.vol === 'NO DESEA POSTULARSE' ? 'selected':''}>NO DESEA POSTULARSE</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary btn-sm" onclick="saveEdits('${d.id}')">💾</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteRec('${d.id}')">🗑️</button>
+                    </td>
+                </tr>`;
+        });
+    };
+
+    window.saveEdits = async (id) => {
+        const upd = {
+            jer: document.getElementById('j-'+id).value,
+            nom: document.getElementById('n-'+id).value.toUpperCase(),
+            ce: document.getElementById('c-'+id).value,
+            mi: document.getElementById('m-'+id).value,
+            ev: document.getElementById('e-'+id).value,
+            vol: document.getElementById('v-'+id).value
+        };
+        await updateDoc(doc(db, "encuestas_gna", id), upd);
+        showAlert("CAMBIOS GUARDADOS EXITOSAMENTE");
+    };
+
+    window.deleteRec = async (id) => {
+        if(confirm("¿ESTÁ SEGURO DE ELIMINAR ESTE REGISTRO?")) await deleteDoc(doc(db, "encuestas_gna", id));
+    };
+
+    let ch1, ch2;
+    window.showCharts = () => {
+        modCharts.show();
+        const evData = { "FIESTA 28 JULIO":0, "SOLO CENA":0, "SOLO ALMUERZO":0, "NO DESEA NADA":0 };
+        const volData = { "VOLUNTARIO FIESTA":0, "VOLUNTARIO CENA":0, "VOLUNTARIO ALMUERZO":0, "NO DESEA POSTULARSE":0 };
+        
+        allDocs.forEach(d => {
+            if(evData[d.ev] !== undefined) evData[d.ev]++;
+            if(volData[d.vol] !== undefined) volData[d.vol]++;
+        });
+
+        if(ch1) ch1.destroy();
+        if(ch2) ch2.destroy();
+
+        ch1 = new Chart(document.getElementById('cEv'), {
+            type: 'pie',
+            data: { labels: Object.keys(evData), datasets:[{ data: Object.values(evData), backgroundColor:['#2d5a27','#4ca64c','#85c185','#adb5bd'] }] },
+            options: { plugins: { title: { display:true, text: 'VOTACIÓN EVENTO' } } }
+        });
+
+        ch2 = new Chart(document.getElementById('cVol'), {
+            type: 'bar',
+            data: { labels: Object.keys(volData), datasets:[{ label: 'CANTIDAD', data: Object.values(volData), backgroundColor:'#0d6efd' }] },
+            options: { plugins: { title: { display:true, text: 'VOTACIÓN COMISIÓN' } } }
+        });
     };
 
     window.downloadPDF = () => {
         const { jsPDF } = window.jspdf;
-        const docPDF = new jsPDF();
-        docPDF.text(document.getElementById('tableTitle').innerText, 14, 15);
-        docPDF.autoTable({ html: '#tablaAdmin', startY: 20, theme: 'grid', headStyles: { fillStyle: [45, 90, 39] } });
-        docPDF.save("reporte_encuesta_gna.pdf");
+        const docPDF = new jsPDF('l', 'mm', 'a4');
+        docPDF.text("LISTA NOMINAL DEL PERSONAL QUE PARTICIPO DE LA ENCUESTA POR LA FIESTA DE GNA", 14, 15);
+        const rows = allDocs.map(d => [d.jer, d.nom, d.ce, d.mi, d.ev, d.vol]);
+        docPDF.autoTable({ head: [['JERARQUÍA', 'NOMBRE', 'CE', 'MI', 'EVENTO', 'COMISIÓN']], body: rows, startY: 20 });
+        docPDF.save("Listado_GNA.pdf");
     };
-
-    window.adminReset = async () => {
-        if(confirm("¿Seguro de ELIMINAR TODA la base de datos? Esta acción es irreversible.")) {
-            const snap = await getDocs(encuestasRef);
-            await Promise.all(snap.docs.map(d => deleteDoc(doc(db, "encuestas_gna", d.id))));
-            localStorage.removeItem('voto_gna_realizado');
-            alert("Base de datos borrada.");
-            location.reload();
-        }
-    };
-
-    // --- CHARTS ---
-    let c1, c2;
-    function initCharts() {
-        onSnapshot(encuestasRef, (snap) => {
-            document.getElementById('totalVotos').innerText = snap.size;
-            const ev = { "Fiesta 28 Julio":0, "Solo Cena":0, "Solo Almuerzo":0, "No quiero nada":0 };
-            const vl = { "Voluntario Fiesta":0, "Voluntario Cena":0, "Voluntario Almuerzo":0, "No deseo postularme":0 };
-            snap.forEach(d => {
-                const x = d.data();
-                if(ev[x.ev] !== undefined) ev[x.ev]++;
-                if(vl[x.vol] !== undefined) vl[x.vol]++;
-            });
-            renderPie('chartEventos', "Preferencia de Evento", ev, c1, (c) => c1=c);
-            renderPie('chartVoluntarios', "Postulaciones", vl, c2, (c) => c2=c);
-        });
-    }
-
-    function renderPie(id, t, d, inst, set) {
-        const ctx = document.getElementById(id).getContext('2d');
-        if(inst) inst.destroy();
-        set(new Chart(ctx, {
-            type: 'pie',
-            data: { labels: Object.keys(d), datasets:[{ data: Object.values(d), backgroundColor: ['#2d5a27','#4ca64c','#85c185','#adb5bd'] }]},
-            options: { responsive:true, maintainAspectRatio:false, plugins: { title: { display:true, text:t } } }
-        }));
-    }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
