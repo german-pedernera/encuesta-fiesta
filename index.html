@@ -24,7 +24,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .admin-link { color: #bbb; text-decoration: none; font-size: 0.8rem; display: block; text-align: center; margin-top: 20px; cursor: pointer; }
         .vote-counter { background: var(--primary-color); color: white; padding: 5px 15px; border-radius: 10px; font-weight: bold; }
-        .table-admin input, .table-admin select { font-size: 0.8rem; }
+        .table-admin input, .table-admin select { font-size: 0.8rem; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -68,6 +68,7 @@
                     <div class="col-6"><label class="form-label fw-bold">CE</label><input type="number" id="ce" class="form-control" required></div>
                     <div class="col-6"><label class="form-label fw-bold">MI</label><input type="number" id="mi" class="form-control" required></div>
                 </div>
+                <p class=" text-center">- Complete todos los campos -</p>
                 <button type="button" class="btn-gna" onclick="validateStep(1, 2)">SIGUIENTE</button>
             </div>
 
@@ -83,7 +84,7 @@
             </div>
 
             <div class="step" id="step3">
-                <h4 class="mb-3 text-success text-center">QUIERO PARTICIPAR EN LA COMISIÓN:</h4>
+                <h4 class="mb-3 text-success text-center">QUIERO SER PARTE DE LA COMISIÓN</h4>
                 <div class="list-group mb-4">
                     <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="VOLUNTARIO FIESTA" required> VOLUNTARIO FIESTA</label>
                     <label class="list-group-item"><input class="form-check-input me-2" type="radio" name="opVol" value="VOLUNTARIO CENA"> VOLUNTARIO CENA</label>
@@ -252,7 +253,6 @@
         } else { alert("CLAVE INCORRECTA"); }
     };
 
-    // BUSCADOR CORREGIDO: Filtrado fluido por todos los campos
     window.filterAdmin = () => {
         const queryText = document.getElementById('adminSearch').value.toLowerCase();
         const filtered = allDocs.filter(d => 
@@ -266,45 +266,51 @@
         const body = document.getElementById('adminTableBody');
         body.innerHTML = '';
         filtered.forEach(d => {
+            // Visualización forzada en MAYÚSCULAS en la tabla administrativa
+            const jerUpperCase = d.jer ? d.jer.toUpperCase() : "";
+            const nomUpperCase = d.nom ? d.nom.toUpperCase() : "";
+            const evUpperCase = d.ev ? d.ev.toUpperCase() : "";
+            const volUpperCase = d.vol ? d.vol.toUpperCase() : "";
+
             body.innerHTML += `
                 <tr>
                     <td>
                         <select id="j-${d.id}" class="form-select form-select-sm">
-                            <option ${d.jer==='COMANDANTE GENERAL'?'selected':''}>COMANDANTE GENERAL</option>
-                            <option ${d.jer==='COMANDANTE MAYOR'?'selected':''}>COMANDANTE MAYOR</option>
-                            <option ${d.jer==='COMANDANTE PRINCIPAL'?'selected':''}>COMANDANTE PRINCIPAL</option>
-                            <option ${d.jer==='COMANDANTE'?'selected':''}>COMANDANTE</option>
-                            <option ${d.jer==='SEGUNDO COMANDANTE'?'selected':''}>SEGUNDO COMANDANTE</option>
-                            <option ${d.jer==='PRIMER ALFÉREZ'?'selected':''}>PRIMER ALFÉREZ</option>
-                            <option ${d.jer==='ALFÉREZ'?'selected':''}>ALFÉREZ</option>
-                            <option ${d.jer==='SUBALFÉREZ'?'selected':''}>SUBALFÉREZ</option>
-                            <option ${d.jer==='SUBOFICIAL MAYOR'?'selected':''}>SUBOFICIAL MAYOR</option>
-                            <option ${d.jer==='SUBOFICIAL PRINCIPAL'?'selected':''}>SUBOFICIAL PRINCIPAL</option>
-                            <option ${d.jer==='SARGENTO AYUDANTE'?'selected':''}>SARGENTO AYUDANTE</option>
-                            <option ${d.jer==='SARGENTO PRIMERO'?'selected':''}>SARGENTO PRIMERO</option>
-                            <option ${d.jer==='SARGENTO'?'selected':''}>SARGENTO</option>
-                            <option ${d.jer==='CABO PRIMERO'?'selected':''}>CABO PRIMERO</option>
-                            <option ${d.jer==='CABO'?'selected':''}>CABO</option>
-                            <option ${d.jer==='GENDARME'?'selected':''}>GENDARME</option>
+                            <option ${jerUpperCase==='COMANDANTE GENERAL'?'selected':''}>COMANDANTE GENERAL</option>
+                            <option ${jerUpperCase==='COMANDANTE MAYOR'?'selected':''}>COMANDANTE MAYOR</option>
+                            <option ${jerUpperCase==='COMANDANTE PRINCIPAL'?'selected':''}>COMANDANTE PRINCIPAL</option>
+                            <option ${jerUpperCase==='COMANDANTE'?'selected':''}>COMANDANTE</option>
+                            <option ${jerUpperCase==='SEGUNDO COMANDANTE'?'selected':''}>SEGUNDO COMANDANTE</option>
+                            <option ${jerUpperCase==='PRIMER ALFÉREZ'?'selected':''}>PRIMER ALFÉREZ</option>
+                            <option ${jerUpperCase==='ALFÉREZ'?'selected':''}>ALFÉREZ</option>
+                            <option ${jerUpperCase==='SUBALFÉREZ'?'selected':''}>SUBALFÉREZ</option>
+                            <option ${jerUpperCase==='SUBOFICIAL MAYOR'?'selected':''}>SUBOFICIAL MAYOR</option>
+                            <option ${jerUpperCase==='SUBOFICIAL PRINCIPAL'?'selected':''}>SUBOFICIAL PRINCIPAL</option>
+                            <option ${jerUpperCase==='SARGENTO AYUDANTE'?'selected':''}>SARGENTO AYUDANTE</option>
+                            <option ${jerUpperCase==='SARGENTO PRIMERO'?'selected':''}>SARGENTO PRIMERO</option>
+                            <option ${jerUpperCase==='SARGENTO'?'selected':''}>SARGENTO</option>
+                            <option ${jerUpperCase==='CABO PRIMERO'?'selected':''}>CABO PRIMERO</option>
+                            <option ${jerUpperCase==='CABO'?'selected':''}>CABO</option>
+                            <option ${jerUpperCase==='GENDARME'?'selected':''}>GENDARME</option>
                         </select>
                     </td>
-                    <td><input id="n-${d.id}" class="form-control form-control-sm" value="${d.nom}"></td>
+                    <td><input id="n-${d.id}" class="form-control form-control-sm" value="${nomUpperCase}"></td>
                     <td><input id="c-${d.id}" class="form-control form-control-sm text-center" value="${d.ce}" type="number"></td>
                     <td><input id="m-${d.id}" class="form-control form-control-sm text-center" value="${d.mi}" type="number"></td>
                     <td>
                         <select id="e-${d.id}" class="form-select form-select-sm">
-                            <option ${d.ev === 'FIESTA 28 JULIO' ? 'selected':''}>FIESTA 28 JULIO</option>
-                            <option ${d.ev === 'SOLO CENA' ? 'selected':''}>SOLO CENA</option>
-                            <option ${d.ev === 'SOLO ALMUERZO' ? 'selected':''}>SOLO ALMUERZO</option>
-                            <option ${d.ev === 'NO DESEA NADA' ? 'selected':''}>NO DESEA NADA</option>
+                            <option ${evUpperCase === 'FIESTA 28 JULIO' ? 'selected':''}>FIESTA 28 JULIO</option>
+                            <option ${evUpperCase === 'SOLO CENA' ? 'selected':''}>SOLO CENA</option>
+                            <option ${evUpperCase === 'SOLO ALMUERZO' ? 'selected':''}>SOLO ALMUERZO</option>
+                            <option ${evUpperCase === 'NO DESEA NADA' ? 'selected':''}>NO DESEA NADA</option>
                         </select>
                     </td>
                     <td>
                         <select id="v-${d.id}" class="form-select form-select-sm">
-                            <option ${d.vol === 'VOLUNTARIO FIESTA' ? 'selected':''}>VOLUNTARIO FIESTA</option>
-                            <option ${d.vol === 'VOLUNTARIO CENA' ? 'selected':''}>VOLUNTARIO CENA</option>
-                            <option ${d.vol === 'VOLUNTARIO ALMUERZO' ? 'selected':''}>VOLUNTARIO ALMUERZO</option>
-                            <option ${d.vol === 'NO DESEA POSTULARSE' ? 'selected':''}>NO DESEA POSTULARSE</option>
+                            <option ${volUpperCase === 'VOLUNTARIO FIESTA' ? 'selected':''}>VOLUNTARIO FIESTA</option>
+                            <option ${volUpperCase === 'VOLUNTARIO CENA' ? 'selected':''}>VOLUNTARIO CENA</option>
+                            <option ${volUpperCase === 'VOLUNTARIO ALMUERZO' ? 'selected':''}>VOLUNTARIO ALMUERZO</option>
+                            <option ${volUpperCase === 'NO DESEA POSTULARSE' ? 'selected':''}>NO DESEA POSTULARSE</option>
                         </select>
                     </td>
                     <td class="text-center">
@@ -362,7 +368,7 @@
     window.downloadPDF = () => {
         const { jsPDF } = window.jspdf;
         const docPDF = new jsPDF('l', 'mm', 'a4');
-        docPDF.text("LISTA NOMINAL DEL PERSONAL QUE PARTICIPO DE LA ENCUESTA POR LA FIESTA DE GNA", 14, 15);
+        docPDF.text("Planilla nominal del personal que participo de la encuesta por la fiesta GNA", 14, 15);
         const rows = allDocs.map(d => [d.jer, d.nom, d.ce, d.mi, d.ev, d.vol]);
         docPDF.autoTable({ head: [['JERARQUÍA', 'NOMBRE', 'CE', 'MI', 'EVENTO', 'COMISIÓN']], body: rows, startY: 20 });
         docPDF.save("Listado_GNA.pdf");
