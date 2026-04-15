@@ -12,36 +12,27 @@
     
     <style>
         :root { --primary-color: #2d5a27; --hover-color: #1e3d1a; --secondary-color: #6c757d; }
-        body { background-color: #f0f2f5; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
         .container { max-width: 600px; }
-        .card { border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
-        
+        .card { border-radius: 20px; border: none; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .step { display: none; }
         .step.active { display: block; animation: fadeIn 0.4s ease-out; }
         
-        /* Estilo unificado de botones */
         .btn-gna { 
             background-color: var(--primary-color); 
-            color: white; 
-            border-radius: 50px; 
-            padding: 12px 24px;
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-block;
-            text-align: center;
-            width: 100%;
+            color: white; border-radius: 50px; padding: 12px 24px;
+            border: none; font-weight: 600; transition: all 0.3s;
+            width: 100%; text-align: center;
         }
-        .btn-gna:hover { background-color: var(--hover-color); color: white; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(45,90,39,0.3); }
-        
+        .btn-gna:hover { background-color: var(--hover-color); color: white; transform: translateY(-2px); }
         .btn-back { background-color: var(--secondary-color); width: auto; min-width: 120px; }
         .btn-next { width: auto; min-width: 120px; }
-
-        .chart-container { position: relative; height: 280px; margin-bottom: 2.5rem; }
-        .counter-badge { font-size: 1.3rem; font-weight: bold; color: var(--primary-color); }
-        
+        .chart-container { position: relative; height: 260px; margin-bottom: 2rem; }
+        .counter-badge { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .btn-close-white { filter: brightness(0) invert(1); }
+        .admin-link { color: #aaa; text-decoration: none; font-size: 0.8rem; margin-top: 20px; display: block; text-align: center; }
+        .admin-link:hover { color: var(--primary-color); }
     </style>
 </head>
 <body>
@@ -55,58 +46,29 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">Jerarquía</label>
                     <select id="jerarquia" class="form-select" required>
-                        <option value="">Seleccione su jerarquía...</option>
-                        <optgroup label="Oficiales">
-                            <option>Comandante General</option><option>Comandante Mayor</option>
-                            <option>Comandante Principal</option><option>Comandante</option>
-                            <option>Segundo Comandante</option><option>Primer Alférez</option>
-                            <option>Alférez</option><option>Subalférez</option>
-                        </optgroup>
-                        <optgroup label="Suboficiales">
-                            <option>Suboficial Mayor</option><option>Suboficial Principal</option>
-                            <option>Sargento Ayudante</option><option>Sargento Primero</option>
-                            <option>Sargento</option><option>Cabo Primero</option>
-                            <option>Cabo</option><option>Gendarme</option>
-                        </optgroup>
+                        <option value="">Seleccione...</option>
+                        <optgroup label="Oficiales"><option>Comandante General</option><option>Comandante Mayor</option><option>Comandante Principal</option><option>Comandante</option><option>Segundo Comandante</option><option>Primer Alférez</option><option>Alférez</option><option>Subalférez</option></optgroup>
+                        <optgroup label="Suboficiales"><option>Suboficial Mayor</option><option>Suboficial Principal</option><option>Sargento Ayudante</option><option>Sargento Primero</option><option>Sargento</option><option>Cabo Primero</option><option>Cabo</option><option>Gendarme</option></optgroup>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Nombres y Apellidos</label>
-                    <input type="text" id="nombreCompleto" class="form-control" placeholder="Ej: Juan Ramón Pérez" required>
+                    <input type="text" id="nombreCompleto" class="form-control" required>
                 </div>
-                <div class="row">
-                    <div class="col-6 mb-4">
-                        <label class="form-label fw-bold">CE</label>
-                        <input type="number" id="ce" class="form-control" placeholder="Clave" required>
-                    </div>
-                    <div class="col-6 mb-4">
-                        <label class="form-label fw-bold">MI</label>
-                        <input type="number" id="mi" class="form-control" placeholder="Matrícula" required>
-                    </div>
+                <div class="row mb-4">
+                    <div class="col-6"><label class="form-label fw-bold">CE</label><input type="number" id="ce" class="form-control" required></div>
+                    <div class="col-6"><label class="form-label fw-bold">MI</label><input type="number" id="mi" class="form-control" required></div>
                 </div>
                 <button type="button" class="btn-gna" onclick="validateAndNext(1, 2)">Siguiente</button>
             </div>
 
             <div class="step" id="step2">
                 <h4 class="mb-3 text-success">Preferencia de Evento</h4>
-                <p class="text-muted small">Seleccione una sola opción:</p>
                 <div class="list-group mb-4">
-                    <label class="list-group-item p-3">
-                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Fiesta 28 Julio" required> 
-                        Quiero que se realice fiesta del 28 de julio
-                    </label>
-                    <label class="list-group-item p-3">
-                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Cena"> 
-                        Solo Cena
-                    </label>
-                    <label class="list-group-item p-3">
-                        <input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Almuerzo"> 
-                        Solo Almuerzo
-                    </label>
-                    <label class="list-group-item p-3 bg-light text-danger border-danger">
-                        <input class="form-check-input me-2" type="radio" name="opEvento" value="No quiero nada"> 
-                        <strong>No quiero nada</strong>
-                    </label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Fiesta 28 Julio" required> Fiesta 28 de Julio</label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Cena"> Solo Cena</label>
+                    <label class="list-group-item p-3"><input class="form-check-input me-2" type="radio" name="opEvento" value="Solo Almuerzo"> Solo Almuerzo</label>
+                    <label class="list-group-item p-3 bg-light text-danger"><input class="form-check-input me-2" type="radio" name="opEvento" value="No quiero nada"> <strong>No quiero nada</strong></label>
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="button" class="btn-gna btn-back" onclick="prevStep(1)">Atrás</button>
@@ -129,39 +91,36 @@
             </div>
 
             <div class="step" id="step4">
-                <div class="text-center mb-4">
-                    <h3 class="text-success mb-1">Estadísticas</h3>
+                <div class="text-center mb-3">
+                    <h4 class="text-success mb-0">Estadísticas en Vivo</h4>
                     <div class="counter-badge" id="totalVotos">0</div>
-                    <small class="text-muted">Participantes registrados</small>
+                    <small class="text-muted">Participantes</small>
                 </div>
                 <div class="chart-container"><canvas id="chartEventos"></canvas></div>
                 <div class="chart-container"><canvas id="chartVoluntarios"></canvas></div>
-                
-                <div class="d-grid gap-3 mt-4">
-                    <button type="button" class="btn-gna" onclick="adminViewVolunteers()">Ver Voluntarios (Admin)</button>
-                    <button type="button" class="btn-gna btn-back w-100" onclick="nextStep(5)">Finalizar</button>
-                    <button type="button" class="btn btn-link text-danger btn-sm" onclick="adminReset()">Reiniciar Sistema</button>
-                </div>
+                <button type="button" class="btn-gna" onclick="nextStep(5)">Finalizar</button>
             </div>
 
             <div class="step text-center py-4" id="step5">
                 <h1 class="display-1 text-success mb-3">✓</h1>
                 <h3>¡Muchas gracias!</h3>
-                <p class="text-muted">Su participación ha sido guardada. Solo se permite un envío por dispositivo.</p>
+                <p class="text-muted">Tu respuesta ha sido procesada.</p>
             </div>
         </form>
+        
+        <a href="#" class="admin-link" onclick="openAdminPanel()">🔓 Panel Administrador</a>
     </div>
 </div>
 
-<div class="modal fade" id="modalPostulacion" tabindex="-1">
+<div class="modal fade" id="modalPostulacion" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header bg-success text-white border-0">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title">Confirmar Voluntariado</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center p-4">
-                <p class="fw-bold fs-5 text-primary mb-0">"Me postulo voluntariamente a participar de la comisión"</p>
+                <p class="fw-bold fs-5 text-primary">"Me postulo voluntariamente a participar de la comisión"</p>
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn-gna" onclick="submitFinal()">Confirmar y Enviar</button>
@@ -170,26 +129,31 @@
     </div>
 </div>
 
-<div class="modal fade" id="modalAdminVoluntarios" tabindex="-1">
+<div class="modal fade" id="modalAdminPanel" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white border-0">
-                <h5 class="modal-title">Listado de Voluntarios</h5>
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Gestión de Encuesta (Admin)</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex justify-content-end mb-3">
-                    <button class="btn btn-success btn-sm rounded-pill px-3" onclick="downloadPDF()">Descargar PDF</button>
+                <div class="d-flex flex-wrap gap-2 justify-content-center mb-4">
+                    <button class="btn btn-outline-success" onclick="renderTable('voluntarios')">Lista Voluntarios</button>
+                    <button class="btn btn-outline-primary" onclick="renderTable('total')">Lista Total Votantes</button>
+                    <button class="btn btn-danger" onclick="adminReset()">Eliminar Base de Datos</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-hover table-sm small" id="tablaVoluntarios">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Jerarquía</th><th>Nombre</th><th>CE</th><th>MI</th><th>Comisión</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaVoluntariosBody"></tbody>
-                    </table>
+                
+                <div id="adminTableContent" style="display:none;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 id="tableTitle">Listado</h6>
+                        <button class="btn btn-sm btn-success" onclick="downloadPDF()">Descargar PDF</button>
+                    </div>
+                    <div class="table-responsive" style="max-height: 350px;">
+                        <table class="table table-hover table-sm small" id="tablaAdmin">
+                            <thead class="table-dark" id="tablaHead"></thead>
+                            <tbody id="tablaBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,8 +179,9 @@
     const db = getFirestore(app);
     const encuestasRef = collection(db, "encuestas_gna");
 
+    // Bloqueo por dispositivo
     window.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem('voto_enviado_gna') === 'true') nextStep(5);
+        if (localStorage.getItem('voto_gna_realizado') === 'true') nextStep(5);
     });
 
     window.nextStep = (n) => {
@@ -224,23 +189,21 @@
         document.getElementById('step'+n).classList.add('active');
         if(n === 4) initCharts();
     };
-
     window.prevStep = (n) => nextStep(n);
 
     window.validateAndNext = (curr, nxt) => {
-        const stepDiv = document.getElementById('step'+curr);
-        const inputs = stepDiv.querySelectorAll('input, select');
+        const step = document.getElementById('step'+curr);
+        const inputs = step.querySelectorAll('input, select');
         let v = true; inputs.forEach(i => { if(!i.checkValidity()){i.reportValidity(); v=false;} });
         if(v) nextStep(nxt);
     };
 
     const modPost = new bootstrap.Modal(document.getElementById('modalPostulacion'));
-    const modAdmin = new bootstrap.Modal(document.getElementById('modalAdminVoluntarios'));
+    const modAdmin = new bootstrap.Modal(document.getElementById('modalAdminPanel'));
 
     window.processVoluntary = () => {
-        const val = document.querySelector('input[name="opVol"]:checked');
-        if(!val) return alert("Seleccione una opción");
-        if(val.value === "No deseo postularme") submitFinal();
+        const val = document.querySelector('input[name="opVol"]:checked').value;
+        if(val === "No deseo postularme") submitFinal();
         else modPost.show();
     };
 
@@ -254,52 +217,62 @@
             vol: document.querySelector('input[name="opVol"]:checked').value,
             ts: new Date().toLocaleString()
         };
-        try {
-            await addDoc(encuestasRef, data);
-            localStorage.setItem('voto_enviado_gna', 'true');
-            modPost.hide();
-            nextStep(4);
-        } catch(e) { alert("Error al enviar. Verifique su conexión."); }
+        await addDoc(encuestasRef, data);
+        localStorage.setItem('voto_gna_realizado', 'true');
+        modPost.hide();
+        nextStep(4);
     };
 
-    window.adminViewVolunteers = async () => {
-        if(prompt("Clave de Administrador:") === "Emi25") {
-            const snap = await getDocs(encuestasRef);
-            const tbody = document.getElementById('listaVoluntariosBody');
-            tbody.innerHTML = "";
+    // --- FUNCIONES ADMIN ---
+    window.openAdminPanel = () => {
+        if(prompt("Clave de Acceso:") === "Emi25") modAdmin.show();
+        else alert("Acceso denegado");
+    };
+
+    window.renderTable = async (type) => {
+        const snap = await getDocs(encuestasRef);
+        const head = document.getElementById('tablaHead');
+        const body = document.getElementById('tablaBody');
+        const title = document.getElementById('tableTitle');
+        document.getElementById('adminTableContent').style.display = 'block';
+        
+        body.innerHTML = "";
+        if(type === 'voluntarios') {
+            title.innerText = "Lista de Voluntarios Postulados";
+            head.innerHTML = "<tr><th>Jerarquía</th><th>Nombre</th><th>Comisión</th><th>MI</th></tr>";
             snap.forEach(d => {
                 const i = d.data();
-                if(i.vol !== "No deseo postularme") {
-                    tbody.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.ce}</td><td>${i.mi}</td><td>${i.vol}</td></tr>`;
-                }
+                if(i.vol !== "No deseo postularme") body.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.vol}</td><td>${i.mi}</td></tr>`;
             });
-            modAdmin.show();
-        } else alert("Clave incorrecta");
+        } else {
+            title.innerText = "Lista Total de Votantes";
+            head.innerHTML = "<tr><th>Jerarquía</th><th>Nombre</th><th>Votó Por</th><th>CE</th></tr>";
+            snap.forEach(d => {
+                const i = d.data();
+                body.innerHTML += `<tr><td>${i.jer}</td><td>${i.nom}</td><td>${i.ev}</td><td>${i.ce}</td></tr>`;
+            });
+        }
     };
 
     window.downloadPDF = () => {
         const { jsPDF } = window.jspdf;
         const docPDF = new jsPDF();
-        docPDF.setFontSize(16);
-        docPDF.text("LISTADO DE VOLUNTARIOS - EVENTO GNA", 14, 15);
-        docPDF.autoTable({
-            html: '#tablaVoluntarios',
-            startY: 20,
-            theme: 'striped',
-            headStyles: { fillStyle: [45, 90, 39] }
-        });
-        docPDF.save("voluntarios_gna_2026.pdf");
+        docPDF.text(document.getElementById('tableTitle').innerText, 14, 15);
+        docPDF.autoTable({ html: '#tablaAdmin', startY: 20, theme: 'grid', headStyles: { fillStyle: [45, 90, 39] } });
+        docPDF.save("reporte_encuesta_gna.pdf");
     };
 
     window.adminReset = async () => {
-        if(prompt("Clave para BORRAR TODO:") === "Emi25") {
+        if(confirm("¿Seguro de ELIMINAR TODA la base de datos? Esta acción es irreversible.")) {
             const snap = await getDocs(encuestasRef);
             await Promise.all(snap.docs.map(d => deleteDoc(doc(db, "encuestas_gna", d.id))));
-            localStorage.removeItem('voto_enviado_gna');
+            localStorage.removeItem('voto_gna_realizado');
+            alert("Base de datos borrada.");
             location.reload();
         }
     };
 
+    // --- CHARTS ---
     let c1, c2;
     function initCharts() {
         onSnapshot(encuestasRef, (snap) => {
